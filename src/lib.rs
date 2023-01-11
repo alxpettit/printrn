@@ -10,7 +10,7 @@ macro_rules! formatr {
 #[macro_export]
 macro_rules! formatrn {
     ($($arg:tt)*) => {
-        formatr!($($arg)*) + "\r\n"
+        $crate::formatr!($($arg)*) + "\r\n"
     };
 }
 
@@ -19,7 +19,7 @@ macro_rules! formatrn {
 #[macro_export]
 macro_rules! printr {
     ($($arg:tt)*) => {
-        print!("{}", formatr!($($arg)*))
+        print!("{}", $crate::formatr!($($arg)*))
     };
 }
 
@@ -32,7 +32,7 @@ macro_rules! printrn {
         print!("\r\n")
     };
     ($($arg:tt)*) => {
-        print!("{}", formatrn!($($arg)*))
+        print!("{}", $crate::formatrn!($($arg)*))
     };
 }
 
