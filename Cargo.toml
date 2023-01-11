@@ -9,9 +9,3 @@ description = "A macro to replace `println!()`, that will replace all `\\n` with
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serial_test = "0.10.0"
-shh = "1.0.1"
-test-toolbox = { version = "0.5.0", features = ["capture", "expected"] }
-
-[dev-dependencies]
-gag = "0.1.10"
