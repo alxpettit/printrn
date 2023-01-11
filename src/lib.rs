@@ -1,7 +1,23 @@
+/// Works like `writeln!()`, but replaces every `\n` with `\r\n`, and appends `\r\n` to the end.
+macro_rules! writern {
+    ($dst:expr, $($arg:tt)*) => {
+        $dst.write_fmt(formatrn!($($arg)*).as_bytes())
+    };
+}
+
+/// formats a string like `format!()`, but replaces every `\n` with `\r\n`.
 #[macro_export]
 macro_rules! formatr {
     ($($arg:tt)*) => {
         format!($($arg)*).replace("\n", "\r\n")
+    };
+}
+
+/// formats a string like `format!()`, but replaces every `\n` with `\r\n`, and appends `\r\n` to the end.
+#[macro_export]
+macro_rules! formatrn {
+    ($($arg:tt)*) => {
+        formatr!($($arg)*) + "\r\n"
     };
 }
 
@@ -10,8 +26,7 @@ macro_rules! formatr {
 #[macro_export]
 macro_rules! printr {
     ($($arg:tt)*) => {
-        let start = formatr!($($arg)*);
-        print!("{}", start);
+        print!("{}", formatr!($($arg)*))
     };
 }
 
@@ -24,8 +39,7 @@ macro_rules! printrn {
         print!("\r\n")
     };
     ($($arg:tt)*) => {
-        let start = formatr!($($arg)*);
-        print!("{}\r\n", start)
+        print!("{}", formatrn!($($arg)*))
     };
 }
 
@@ -39,14 +53,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn printr() {
+    fn formatr_test() {
+        assert_eq!(formatr!("test\n"), "test\r\n");
+        assert_eq!(formatr!("n{}\n", 5), "n5\r\n");
+    }
+
+    #[test]
+    fn formatrn_test() {
+        assert_eq!(formatrn!("test"), "test\r\n");
+        assert_eq!(formatrn!("n{}", 5), "n5\r\n");
+    }
+
+    #[test]
+    fn printr_test() {
         printr!("this is A test of printr");
         printr!("{}^2 + {}^2 = {}^2", A, B, C);
         printr!("{}", STRING_EXAMPLE);
     }
 
     #[test]
-    fn printrn() {
+    fn printrn_test() {
+        printrn!();
         printrn!("this is A test of printrn");
         printrn!("{}^2 + {}^2 = {}^2", A, B, C);
         printrn!("{}", STRING_EXAMPLE);
