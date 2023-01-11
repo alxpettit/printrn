@@ -1,10 +1,3 @@
-/// Works like `writeln!()`, but replaces every `\n` with `\r\n`, and appends `\r\n` to the end.
-macro_rules! writern {
-    ($dst:expr, $($arg:tt)*) => {
-        $dst.write_fmt(formatrn!($($arg)*).as_bytes())
-    };
-}
-
 /// formats a string like `format!()`, but replaces every `\n` with `\r\n`.
 #[macro_export]
 macro_rules! formatr {
